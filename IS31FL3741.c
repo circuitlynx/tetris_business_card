@@ -61,15 +61,34 @@ void IS31FL3741_init(void){
     
     // Sets global current
     IS31FL3741_writeReg(GLOBAL_CURRENT_REGISTER, GLOBAL_CURRENT);
+
+    // Initializes all LEDs on screen
+    IS31FL3741_selectPage(0x02);
+    for(uint16_t i = 0; i < 180; i++) {
+        IS31FL3741_writeReg((uint8_t)i, 0xFF);
+    }
+    IS31FL3741_selectPage(0x03);
+    for(uint16_t i = 0; i < 180; i++) {
+        IS31FL3741_writeReg((uint8_t)i, 0xFF);
+    }
 }
 
-// Writes with a color in 0xBBRRGG format.
+// Writes with a color in 0xRRGGBB format.
 bool writePixel(uint8_t y, uint8_t x, uint32_t color){
     uint8_t txBuffer[4];
     txBuffer[0] = ADDRESS_TABLE[y][x] * 3;
     // Fill the buffer with each bit
-    for (int i = 1; i < 4; i++){
-        txBuffer[i] = (uint8_t)((color >> ((i-1)*8)) & 0xFF);
+    if (y % 2 == 0 && y >= 2){
+        // Pixel is RGB
+        for (int i = 1; i < 4; i++){
+            txBuffer[i] = (uint8_t)((color >> ((i-1)*8)) & 0xFF);
+        }
+    } else {
+        // Pixel is BRG
+        txBuffer[1] = (uint8_t)((color >> ((1)*8)) & 0xFF);
+        txBuffer[2] = (uint8_t)((color >> ((2)*8)) & 0xFF);
+        txBuffer[3] = (uint8_t)((color >> ((0)*8)) & 0xFF);
+        
     }
 
     // Selects based on the position of the pixel. These numbers are based on the hardware locations of pixels.

@@ -37,50 +37,30 @@ int main(void)
 {
     SYSCFG_DL_init();
     IS31FL3741_init();
-    
-    // Test code
-    // --- STEP A: Flood ALL Scaling Registers (Pages 2 and 3) ---
-    // The IS31FL3741 has 351 channels. Page 2 handles 0-179, Page 3 handles 180-350.
-    IS31FL3741_selectPage(0x02);
-    for(uint16_t i = 0; i < 180; i++) {
-        IS31FL3741_writeReg((uint8_t)i, 0x80);
-    }
-    IS31FL3741_selectPage(0x03);
-    for(uint16_t i = 0; i < 180; i++) {
-        IS31FL3741_writeReg((uint8_t)i, 0x80);
-    }
-    
-    // --- STEP B: Flood ALL PWM Brightness Registers (Pages 0 and 1) ---
-    // Page 0 handles 0-179, Page 1 handles 180-350.
-    /*IS31FL3741_selectPage(0x00);
-
-    for(uint16_t i = 0; i < 180; i = i + 3) {
-        IS31FL3741_writeReg((uint8_t)i, 0x08);
-        IS31FL3741_writeReg((uint8_t)(i+1), 0x08);
-        IS31FL3741_writeReg((uint8_t)(i+2), 0x08);
-        delay_cycles(4000000);
-
-    }
 
     
-    IS31FL3741_selectPage(0x01);
-    for(uint16_t i = 0; i < 180; i = i + 3) {
-        IS31FL3741_writeReg((uint8_t)i, 0x08);
-        IS31FL3741_writeReg((uint8_t)(i+1), 0x08);
-        IS31FL3741_writeReg((uint8_t)(i+2), 0x08);
-        delay_cycles(4000000);
-
-    }*/
-
-    
-    while (1) {
         for (int x = 0; x < SCREEN_WIDTH; x++){
-            for (int y = 0; y < SCREEN_HEIGHT; y++){
-                writePixel(y,x,0xFFFFFF);
-                delay_cycles(4000000);
-                writePixel(y, x, 0x0);
-                delay_cycles(4000000);
-            }
+            writePixel(0,x,RED);
         }
-    }
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            writePixel(1,x,GREEN);
+        }
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            writePixel(2,x,BLUE);
+        }
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            writePixel(3,x,CYAN);
+        }
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            writePixel(4,x,ORANGE);
+        }
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            writePixel(5,x,YELLOW);
+        }
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            writePixel(6,x,PURPLE);
+        }
+
+        while (1) {
+        }
 }

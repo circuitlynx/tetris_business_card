@@ -7,7 +7,7 @@
 #define IS31FL3741_ADDR 0x30
 
 // Defines brightness of the screen
-#define GLOBAL_CURRENT 0x30
+#define GLOBAL_CURRENT 0x02
 
 #define COMMAND_REGISTER 0xFD
 #define COMMAND_REGISTER_LOCK 0xFE
@@ -32,6 +32,14 @@
 #define SCREEN_WIDTH 9
 #define SCREEN_HEIGHT 13
 
+#define RED    0xFF0404
+#define GREEN  0x04FF04
+#define BLUE   0x0404FF
+#define CYAN   0x04FFFF
+#define ORANGE 0xFF2804
+#define YELLOW 0xFFFF04
+#define PURPLE 0xFF04FF
+
 // Write a single byte to a register
 bool IS31FL3741_writeReg(uint8_t reg, uint8_t data);
 
@@ -41,7 +49,7 @@ bool IS31FL3741_selectPage(uint8_t page);
 // Initialize the display
 void IS31FL3741_init(void);
 
-// Writes with a color in 0xBBRRGG format.
+// Writes with a color in 0xRRGGBB format.
 bool writePixel(uint8_t y, uint8_t x, uint32_t color);
 
 #endif
