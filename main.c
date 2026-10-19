@@ -32,35 +32,14 @@
 
 #include "ti_msp_dl_config.h"
 #include "IS31FL3741.h"
+#include "game.h"
+#include "test.h"
 
 int main(void)
 {
     SYSCFG_DL_init();
     IS31FL3741_init();
-
-    
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(0,x,RED);
-        }
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(1,x,GREEN);
-        }
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(2,x,BLUE);
-        }
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(3,x,CYAN);
-        }
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(4,x,ORANGE);
-        }
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(5,x,YELLOW);
-        }
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            writePixel(6,x,PURPLE);
-        }
-
-        while (1) {
-        }
+    minoTest();
+    while (1) {
+    }
 }

@@ -1,11 +1,12 @@
 #include "game.h"
 #include "IS31FL3741.h"
 
-static uint8_t gameBoard[SCREEN_HEIGHT][SCREEN_WIDTH];
+// There will be a 2 unit buffer around every playable edge of the board.
+static uint8_t gameBoard[BOARD_HEIGHT][SCREEN_WIDTH + 4];
 static ActiveMino currentMino = NONE;
 static Orientation currentOrientation;
-static uint8_t currentMinoX;
-static uint8_t currentMinoY;
+static uint8_t currentMinoX = MINO_SPAWN_POSITION_X;
+static uint8_t currentMinoY = MINO_SPAWN_POSITION_Y;
 
 const Mino i_block = {
     .color = CYAN,
@@ -213,5 +214,34 @@ void gameTick(void){
         setMino();
         clearRows();
         return;
+    }
+}
+
+void drawMino(uint8_t y, uint8_t x, Mino mino, Orientation orientation, bool clear){
+    bool (*toDraw)[4];
+    switch (orientation) {
+        case NORTH:
+            toDraw = mino.rotationNorth;
+            break;
+        case EAST:
+            toDraw = mino.rotationEast;
+            break;
+        case SOUTH:
+            toDraw = mino.rotationSouth;
+            break;
+        case WEST:
+            toDraw = mino.rotationWest;
+            break;
+    }
+    uint32_t color;
+    if (clear) color = BLACK;
+    else color = mino.color;
+
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if (toDraw[j][i] == 1) {
+                writePixel(y + j, x + i, color);
+            }
+        }
     }
 }

@@ -4,6 +4,11 @@
 #include <stdint.h>
 #include "IS31FL3741.h"
 
+#define MINO_SPAWN_POSITION_X 2
+#define MINO_SPAWN_POSITION_Y 0
+
+#define BOARD_HEIGHT 20
+
 typedef enum ActiveMino{
     NONE,
     I_BLOCK,
@@ -30,6 +35,14 @@ typedef struct Mino{
     bool rotationWest[4][4];
 } Mino;
 
+extern const Mino i_block;
+extern const Mino s_block;
+extern const Mino z_block;
+extern const Mino o_block;
+extern const Mino t_block;
+extern const Mino l_block;
+extern const Mino j_block;
+
 // Performs all actions needed each game tick.
 void gameTick(void);
 
@@ -45,7 +58,10 @@ bool lowerMino(void);
 // Writes the mino to the game board.
 void setMino(void);
 
-// Checks if any rows are full and need to be cleared.
+// Checks if any rows are full and need to be cleared. If so, clear them.
 void clearRows(void);
+
+// If clear is set, erase the mino instead.
+void drawMino(uint8_t y, uint8_t x, Mino mino, Orientation orientation, bool clear);
 
 #endif
