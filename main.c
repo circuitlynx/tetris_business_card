@@ -39,7 +39,7 @@ int main(void)
 {
     SYSCFG_DL_init();
     IS31FL3741_init();
-    minoTest();
+    createMino();
     while (1) {
     }
 }

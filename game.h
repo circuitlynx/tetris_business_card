@@ -4,10 +4,14 @@
 #include <stdint.h>
 #include "IS31FL3741.h"
 
-#define MINO_SPAWN_POSITION_X 2
-#define MINO_SPAWN_POSITION_Y 0
-
+#define BORDER 2
 #define BOARD_HEIGHT 20
+#define BOARD_WIDTH SCREEN_WIDTH + BORDER * 2
+
+#define MINO_SPAWN_POSITION_X 2 + BORDER
+#define MINO_SPAWN_POSITION_Y 0 + BOARD_HEIGHT - SCREEN_HEIGHT - BORDER
+
+#define SEED 1
 
 typedef enum ActiveMino{
     NONE,
@@ -63,5 +67,21 @@ void clearRows(void);
 
 // If clear is set, erase the mino instead.
 void drawMino(uint8_t y, uint8_t x, Mino mino, Orientation orientation, bool clear);
+
+// Selects the next available mino
+ActiveMino selectNext(void);
+
+// Selects a random number
+uint32_t rngNext(void);
+
+// Converts the board position to its screen position
+uint8_t xScreenPos(uint8_t x);
+uint8_t yScreenPos(uint8_t y);
+
+// Determines whether a logical location is in game bounds or on the screen, respectively.
+bool inBounds(uint8_t x, uint8_t y);
+bool onScreen(uint8_t x, uint8_t y);
+
+bool canBePlaced(uint8_t y, uint8_t x, Mino mino, Orientation orientation);
 
 #endif
