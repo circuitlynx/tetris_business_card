@@ -218,7 +218,7 @@ void gameTick(void){
     
     if (!lowerMino()) {
         setMino();
-        clearRows();
+        //clearRows();
         return;
     }
 }
@@ -389,4 +389,32 @@ bool lowerMino(){
         drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, false);
         return true;
     }
+}
+
+void setMino(){
+    Mino mino = minoType();
+    bool (*toDraw)[4];
+    switch (currentOrientation) {
+        case NORTH:
+            toDraw = mino.rotationNorth;
+            break;
+        case EAST:
+            toDraw = mino.rotationEast;
+            break;
+        case SOUTH:
+            toDraw = mino.rotationSouth;
+            break;
+        case WEST:
+            toDraw = mino.rotationWest;
+            break;
+    }
+
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if (toDraw[j][i] == 1) {
+                gameBoard[j + currentMinoY][i + currentMinoX] = mino.color;
+            }
+        }
+    }
+    currentMino = NONE;
 }
