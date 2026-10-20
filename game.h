@@ -84,4 +84,12 @@ bool onScreen(uint8_t x, uint8_t y);
 
 bool canBePlaced(uint8_t y, uint8_t x, Mino mino, Orientation orientation);
 
+void restartGame(void);
+
+// Attempts to lower the mino by one. If it can't, it returns FALSE and does nothing else.
+bool lowerMino(void);
+
+// Gets the current type of mino
+Mino minoType(void);
+
 #endif

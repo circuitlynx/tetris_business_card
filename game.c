@@ -253,11 +253,7 @@ void drawMino(uint8_t y, uint8_t x, Mino mino, Orientation orientation, bool cle
     }
 }
 
-bool createMino(){
-    currentMino = selectNext();
-    currentOrientation = NORTH;
-    currentMinoX = MINO_SPAWN_POSITION_X;
-    currentMinoY = MINO_SPAWN_POSITION_Y;
+Mino minoType(){
     Mino newMino;
     switch (currentMino) {
         case NONE:
@@ -282,7 +278,17 @@ bool createMino(){
         case J_BLOCK:
             newMino = j_block;
             break;
-        }
+    }
+    return newMino;
+}
+
+bool createMino(){
+    currentMino = selectNext();
+    currentOrientation = NORTH;
+    currentMinoX = MINO_SPAWN_POSITION_X;
+    currentMinoY = MINO_SPAWN_POSITION_Y;
+    Mino newMino = minoType();
+    
 
     if (canBePlaced(currentMinoY, currentMinoX, newMino, currentOrientation)){
         drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), newMino, currentOrientation, 0);
@@ -323,14 +329,14 @@ uint8_t yScreenPos(uint8_t y){
 }
 
 bool inBounds(uint8_t x, uint8_t y){
-    if (x >= BORDER & x < BORDER + SCREEN_WIDTH & y < SCREEN_HEIGHT - BORDER) {
+    if (x >= BORDER & x < BORDER + SCREEN_WIDTH & y < BOARD_HEIGHT - BORDER) {
         return true;
     } else {
         return false;
     }
 }
 bool onScreen(uint8_t x, uint8_t y){
-    if (x >= BORDER & x < BORDER + SCREEN_WIDTH & y < SCREEN_HEIGHT - BORDER & y > BOARD_HEIGHT - SCREEN_HEIGHT - BORDER){
+    if (x >= BORDER & x < BORDER + SCREEN_WIDTH & y < BOARD_HEIGHT - BORDER & y > BOARD_HEIGHT - SCREEN_HEIGHT - BORDER){
         return true;
     } else {
         return false;
@@ -359,4 +365,28 @@ bool canBePlaced(uint8_t y, uint8_t x, Mino mino, Orientation orientation){
         }
     }
     return true;
+}
+
+void restartGame(){
+    for (int i = 0; i < BOARD_WIDTH; i++){
+        for (int j = 0; j < BOARD_HEIGHT; j++){
+            gameBoard[j][i] = 0;
+        }
+    }
+    for (int i = 0; i < SCREEN_WIDTH; i++){
+        for (int j = 0; j < SCREEN_HEIGHT; j++){
+            writePixel(j, i, BLACK);
+        }
+    }
+}
+
+bool lowerMino(){
+    if (!canBePlaced(currentMinoY + 1, currentMinoX, minoType(), currentOrientation)){
+        return false;
+    } else {
+        drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, true);
+        currentMinoY++;
+        drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, false);
+        return true;
+    }
 }

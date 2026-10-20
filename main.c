@@ -40,6 +40,9 @@ int main(void)
     SYSCFG_DL_init();
     IS31FL3741_init();
     createMino();
+
     while (1) {
+    lowerMino();
+    delay_cycles(4000000);
     }
 }
