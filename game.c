@@ -1,5 +1,6 @@
 #include "game.h"
 #include "IS31FL3741.h"
+#include "ti_msp_dl_config.h"
 
 // There will be a 2 unit buffer around every playable edge of the board.
 static uint8_t gameBoard[BOARD_HEIGHT][SCREEN_WIDTH + 4];
@@ -368,14 +369,22 @@ bool canBePlaced(uint8_t y, uint8_t x, Mino mino, Orientation orientation){
 }
 
 void restartGame(){
+    for (int j = SCREEN_HEIGHT - 1; j >= 0; j--){
+        for (int i = 0; i < SCREEN_WIDTH; i++){
+            writePixel(j, i, WHITE);
+            delay_cycles(400000);
+        }
+    }
+
     for (int i = 0; i < BOARD_WIDTH; i++){
         for (int j = 0; j < BOARD_HEIGHT; j++){
             gameBoard[j][i] = 0;
         }
     }
-    for (int i = 0; i < SCREEN_WIDTH; i++){
-        for (int j = 0; j < SCREEN_HEIGHT; j++){
+    for (int j = SCREEN_HEIGHT - 1; j >= 0; j--){
+        for (int i = 0; i < SCREEN_WIDTH; i++){
             writePixel(j, i, BLACK);
+            delay_cycles(400000);
         }
     }
 }

@@ -40,6 +40,7 @@
 #define YELLOW 0xFFFF04
 #define PURPLE 0xFF04FF
 #define BLACK  0x000000
+#define WHITE  0xFFFFFF
 
 // Write a single byte to a register
 bool IS31FL3741_writeReg(uint8_t reg, uint8_t data);
