@@ -6,10 +6,10 @@ Right now, the project runs as a breadboard prototype.
 <!-- TODO: Add a photo-->
 
 ## Status
-[x] Basic game logic 
-[x] Interrupt-driven gravity tick
-[x] LED matrix driver controls
-[ ] Custom PCB design
+[x] Basic game logic \
+[x] Interrupt-driven gravity tick\
+[x] LED matrix driver controls\
+[ ] Custom PCB design\
 
 ## Hardware
 MCU: TI-MSPM0C1103\
