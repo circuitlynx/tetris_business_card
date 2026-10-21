@@ -1,6 +1,7 @@
 #include "game.h"
 #include "IS31FL3741.h"
 #include "ti_msp_dl_config.h"
+#include "isr.h"
 
 // There will be a 2 unit buffer around every playable edge of the board.
 static Color gameBoard[BOARD_HEIGHT][SCREEN_WIDTH + 4];
@@ -460,6 +461,12 @@ void clearRows(){
             for (int j = 0; j < SCREEN_WIDTH; j++) {
                 writePixel(yScreenPos(i + currentMinoY), j, hex(white));
             }
+            
+            uint32_t start = msPassed;
+            while ((msPassed - start) < 150) {
+                __WFI();
+            }
+
             for (int j = i + currentMinoY; j > 0; j--){
                 for (int k = 0; k < BOARD_WIDTH; k++){
                     gameBoard[j][k] = gameBoard[j-1][k];
