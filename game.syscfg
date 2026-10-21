@@ -10,13 +10,30 @@
  * Import the modules used in this configuration.
  */
 const Board  = scripting.addModule("/ti/driverlib/Board");
+const GPIO   = scripting.addModule("/ti/driverlib/GPIO", {}, false);
+const GPIO1  = GPIO.addInstance();
 const I2C    = scripting.addModule("/ti/driverlib/I2C", {}, false);
 const I2C1   = I2C.addInstance();
 const SYSCTL = scripting.addModule("/ti/driverlib/SYSCTL");
+const TIMER  = scripting.addModule("/ti/driverlib/TIMER", {}, false);
+const TIMER1 = TIMER.addInstance();
 
 /**
  * Write custom configuration values to the imported modules.
  */
+
+GPIO1.$name                              = "GPIO_GRP_0";
+GPIO1.associatedPins.create(2);
+GPIO1.associatedPins[0].direction        = "INPUT";
+GPIO1.associatedPins[0].interruptEn      = true;
+GPIO1.associatedPins[0].polarity         = "RISE";
+GPIO1.associatedPins[0].internalResistor = "PULL_UP";
+GPIO1.associatedPins[0].$name            = "PIN_LEFT";
+GPIO1.associatedPins[1].$name            = "PIN_RIGHT";
+GPIO1.associatedPins[1].direction        = "INPUT";
+GPIO1.associatedPins[1].internalResistor = "PULL_UP";
+GPIO1.associatedPins[1].interruptEn      = true;
+GPIO1.associatedPins[1].polarity         = "FALL";
 
 I2C1.$name                           = "I2C_0";
 I2C1.basicEnableController           = true;
@@ -26,6 +43,12 @@ I2C1.sclPinConfig.$name              = "ti_driverlib_gpio_GPIOPinGeneric1";
 
 SYSCTL.disableNRSTPin = true;
 
+TIMER1.$name           = "TIMER_0";
+TIMER1.interrupts      = ["ZERO"];
+TIMER1.timerStartTimer = true;
+TIMER1.timerPeriod     = "1 ms";
+TIMER1.timerMode       = "PERIODIC";
+
 const ProjectConfig              = scripting.addModule("/ti/project_config/ProjectConfig", {}, false);
 ProjectConfig.migrationCondition = true;
 
@@ -34,10 +57,13 @@ ProjectConfig.migrationCondition = true;
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
-Board.peripheral.$suggestSolution          = "DEBUGSS";
-Board.peripheral.swclkPin.$suggestSolution = "PA20";
-Board.peripheral.swdioPin.$suggestSolution = "PA19";
-I2C1.peripheral.$suggestSolution           = "I2C0";
-I2C1.peripheral.sdaPin.$suggestSolution    = "PA0";
-I2C1.peripheral.sclPin.$suggestSolution    = "PA1/NRST";
-SYSCTL.peripheral.$suggestSolution         = "SYSCTL";
+Board.peripheral.$suggestSolution            = "DEBUGSS";
+Board.peripheral.swclkPin.$suggestSolution   = "PA20";
+Board.peripheral.swdioPin.$suggestSolution   = "PA19";
+GPIO1.associatedPins[0].pin.$suggestSolution = "PA24";
+GPIO1.associatedPins[1].pin.$suggestSolution = "PA27";
+I2C1.peripheral.$suggestSolution             = "I2C0";
+I2C1.peripheral.sdaPin.$suggestSolution      = "PA0";
+I2C1.peripheral.sclPin.$suggestSolution      = "PA1/NRST";
+SYSCTL.peripheral.$suggestSolution           = "SYSCTL";
+TIMER1.peripheral.$suggestSolution           = "TIMA0";

@@ -34,14 +34,21 @@
 #include "IS31FL3741.h"
 #include "game.h"
 #include "test.h"
+#include "timers.h"
 
 int main(void)
 {
     SYSCFG_DL_init();
     IS31FL3741_init();
+    // IRC for gravityTick
+    NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);
+    DL_TimerA_startCounter(TIMER_0_INST);
 
     while (1) {
-    gameTick();
-    delay_cycles(4000000);
+        if (gravityTick){
+            gravityTick = false;
+            gameTick();
+        }
+        __WFI();
     }
 }

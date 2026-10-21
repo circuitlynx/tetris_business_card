@@ -112,3 +112,26 @@ bool writePixel(uint8_t y, uint8_t x, uint32_t color){
     }
     return true;
 }
+
+uint32_t hex(Color color){
+    switch (color) {
+        case black:
+            return BLACK;
+        case white:
+            return WHITE;
+        case red:
+            return RED;
+        case green:
+            return GREEN;
+        case blue:
+            return BLUE;
+        case cyan:
+            return CYAN;
+        case orange:
+            return ORANGE;
+        case yellow:
+            return YELLOW;
+        case purple:
+            return PURPLE;
+    }
+}

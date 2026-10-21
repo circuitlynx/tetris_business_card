@@ -32,7 +32,7 @@ typedef enum Orientation{
 } Orientation;
 
 typedef struct Mino{
-    uint32_t color;
+    Color color;
     bool rotationNorth[4][4];
     bool rotationEast[4][4];
     bool rotationSouth[4][4];

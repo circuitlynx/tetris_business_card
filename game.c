@@ -3,7 +3,7 @@
 #include "ti_msp_dl_config.h"
 
 // There will be a 2 unit buffer around every playable edge of the board.
-static uint8_t gameBoard[BOARD_HEIGHT][SCREEN_WIDTH + 4];
+static Color gameBoard[BOARD_HEIGHT][SCREEN_WIDTH + 4];
 static ActiveMino currentMino = NONE;
 static Orientation currentOrientation;
 static uint8_t currentMinoX = MINO_SPAWN_POSITION_X;
@@ -16,7 +16,7 @@ static uint8_t bagIndex = 7;
 static uint32_t rngState = SEED;
 
 const Mino i_block = {
-    .color = CYAN,
+    .color = cyan,
     .rotationNorth = {
         {0,0,0,0},
         {1,1,1,1},
@@ -44,7 +44,7 @@ const Mino i_block = {
 };
 
 const Mino s_block = {
-    .color = GREEN,
+    .color = green,
     .rotationNorth = {
         {0,0,1,1},
         {0,1,1,0},
@@ -72,7 +72,7 @@ const Mino s_block = {
 };
 
 const Mino z_block = {
-    .color = RED,
+    .color = red,
     .rotationNorth = {
         {0,1,1,0},
         {0,0,1,1},
@@ -100,7 +100,7 @@ const Mino z_block = {
 };
 
 const Mino o_block = {
-    .color = YELLOW,
+    .color = yellow,
     .rotationNorth = {
         {0,1,1,0},
         {0,1,1,0},
@@ -128,7 +128,7 @@ const Mino o_block = {
 };
 
 const Mino t_block = {
-    .color = PURPLE,
+    .color = purple,
     .rotationNorth = {
         {0,0,1,0},
         {0,1,1,1},
@@ -156,7 +156,7 @@ const Mino t_block = {
 };
 
 const Mino l_block = {
-    .color = ORANGE,
+    .color = orange,
     .rotationNorth = {
         {0,0,0,1},
         {0,1,1,1},
@@ -184,7 +184,7 @@ const Mino l_block = {
 };
 
 const Mino j_block = {
-    .color = BLUE,
+    .color = blue,
     .rotationNorth = {
         {0,1,0,0},
         {0,1,1,1},
@@ -241,14 +241,14 @@ void drawMino(uint8_t y, uint8_t x, Mino mino, Orientation orientation, bool cle
             toDraw = mino.rotationWest;
             break;
     }
-    uint32_t color;
+    Color color;
     if (clear) color = BLACK;
     else color = mino.color;
 
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++){
             if (toDraw[j][i] == 1) {
-                writePixel(y + j, x + i, color);
+                writePixel(y + j, x + i, hex(color));
             }
         }
     }
