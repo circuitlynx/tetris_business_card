@@ -388,6 +388,7 @@ void restartGame(){
             delay_cycles(400000);
         }
     }
+    tickSpeed = 1;
 }
 
 bool lowerMino(){

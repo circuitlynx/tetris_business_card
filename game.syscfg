@@ -23,7 +23,7 @@ const TIMER1 = TIMER.addInstance();
  */
 
 GPIO1.$name                              = "GPIO_GRP_0";
-GPIO1.associatedPins.create(3);
+GPIO1.associatedPins.create(4);
 GPIO1.associatedPins[0].direction        = "INPUT";
 GPIO1.associatedPins[0].interruptEn      = true;
 GPIO1.associatedPins[0].internalResistor = "PULL_UP";
@@ -39,6 +39,11 @@ GPIO1.associatedPins[2].direction        = "INPUT";
 GPIO1.associatedPins[2].internalResistor = "PULL_UP";
 GPIO1.associatedPins[2].interruptEn      = true;
 GPIO1.associatedPins[2].polarity         = "FALL";
+GPIO1.associatedPins[3].$name            = "PIN_DOWN";
+GPIO1.associatedPins[3].direction        = "INPUT";
+GPIO1.associatedPins[3].internalResistor = "PULL_UP";
+GPIO1.associatedPins[3].interruptEn      = true;
+GPIO1.associatedPins[3].polarity         = "FALL";
 
 I2C1.$name                           = "I2C_0";
 I2C1.basicEnableController           = true;
@@ -65,9 +70,10 @@ ProjectConfig.migrationCondition = true;
 Board.peripheral.$suggestSolution            = "DEBUGSS";
 Board.peripheral.swclkPin.$suggestSolution   = "PA20";
 Board.peripheral.swdioPin.$suggestSolution   = "PA19";
-GPIO1.associatedPins[0].pin.$suggestSolution = "PA2";
-GPIO1.associatedPins[1].pin.$suggestSolution = "PA28";
-GPIO1.associatedPins[2].pin.$suggestSolution = "PA26";
+GPIO1.associatedPins[0].pin.$suggestSolution = "PA6";
+GPIO1.associatedPins[1].pin.$suggestSolution = "PA2";
+GPIO1.associatedPins[2].pin.$suggestSolution = "PA28";
+GPIO1.associatedPins[3].pin.$suggestSolution = "PA26";
 I2C1.peripheral.$suggestSolution             = "I2C0";
 I2C1.peripheral.sdaPin.$suggestSolution      = "PA0";
 I2C1.peripheral.sclPin.$suggestSolution      = "PA1/NRST";

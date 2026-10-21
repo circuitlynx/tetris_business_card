@@ -1,5 +1,6 @@
 #include "ti_msp_dl_config.h"
 #include "isr.h"
+#include "game.h"
 
 #define DEBOUNCE_MS 10
 
@@ -16,19 +17,27 @@ static volatile bool     rightLocked;
 static volatile uint32_t rightLockedMs;
 static volatile bool     upLocked;
 static volatile uint32_t upLockedMs;
+static volatile bool     downLocked;
+static volatile uint32_t downLockedMs;
+
+volatile uint32_t tickSpeed = 1; // Overall tick speedup
+volatile uint8_t  speedUp   = 1; // Used only for holding DOWN
 
 // Helper function for the timer. If a pin has been HIGH for longer than DEBOUNCE_MS it will arm itself.
-static void rearmPin(uint32_t pin, volatile bool *locked, volatile uint32_t *lockMs);
+static bool rearmPin(uint32_t pin, volatile bool *locked, volatile uint32_t *lockMs);
 
 // Triggers on 1ms ticks
 void TIMER_0_INST_IRQHandler(void){
     if (DL_TimerA_getPendingInterrupt(TIMER_0_INST) == DL_TIMER_IIDX_ZERO){
         msPassed++;
-        if (msPassed % 500 == 0) gravityTick = true;
+        if (msPassed % (BASE_TICK_TIME_MS / (tickSpeed * speedUp)) == 0) gravityTick = true;
     }
     rearmPin(GPIO_GRP_0_PIN_LEFT_PIN, &leftLocked, &leftLockedMs);
     rearmPin(GPIO_GRP_0_PIN_RIGHT_PIN, &rightLocked, &rightLockedMs);
     rearmPin(GPIO_GRP_0_PIN_UP_PIN, &upLocked, &upLockedMs);
+    if (rearmPin(GPIO_GRP_0_PIN_DOWN_PIN, &downLocked, &downLockedMs)){
+        speedUp = 1;
+    }
 }
 
 // Triggers on button inputs
@@ -52,19 +61,28 @@ void GPIOA_IRQHandler(void){
             upLockedMs = msPassed;
             upLocked = true;
             break;
+        case GPIO_GRP_0_PIN_DOWN_IIDX:
+            speedUp = MULTIPLIER_SPEED_UP;
+            DL_GPIO_disableInterrupt(GPIOA, GPIO_GRP_0_PIN_DOWN_PIN);
+            downLockedMs = msPassed;
+            downLocked = true;
+            break;
         default:
             break;
     }
 }
 
 // Helper function for the timer. If a pin has been HIGH for longer than DEBOUNCE_MS it will arm itself.
-static void rearmPin(uint32_t pin, volatile bool *locked, volatile uint32_t *lockMs){
-    if (!*locked) return;
+static bool rearmPin(uint32_t pin, volatile bool *locked, volatile uint32_t *lockMs){
+    if (!*locked) return false;
     if (DL_GPIO_readPins(GPIOA, pin) == 0) {
         *lockMs = msPassed;
+        return false;
     } else if ((msPassed - *lockMs) >= DEBOUNCE_MS) {
         DL_GPIO_clearInterruptStatus(GPIOA, pin);
         DL_GPIO_enableInterrupt(GPIOA, pin);
         *locked = false;
+        return true;
     }
+    return false;
 }

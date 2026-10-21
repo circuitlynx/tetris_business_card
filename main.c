@@ -51,7 +51,6 @@ int main(void)
             moveLeft = false;
             moveRight = false;
         }
-
         if (moveLeft) {
             moveLeft = false;
             moveMino(LEFT);
@@ -64,7 +63,6 @@ int main(void)
             rotate = false;
             rotateMino();
         }
-
         if (gravityTick){
             gravityTick = false;
             gameTick();

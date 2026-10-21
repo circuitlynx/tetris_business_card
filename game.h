@@ -14,6 +14,11 @@
 #define LEFT -1
 #define RIGHT 1
 
+#define BASE_TICK_TIME_MS 500
+
+#define MULTIPLIER_SPEED_UP 6
+#define MULTIPLIER_LEVEL    1.5
+
 #define SEED 1
 
 typedef enum ActiveMino{
