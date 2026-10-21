@@ -17,7 +17,8 @@
 #define BASE_TICK_TIME_MS 500
 
 #define MULTIPLIER_SPEED_UP 6
-#define MULTIPLIER_LEVEL    1.5
+#define MULTIPLIER_LEVEL    1.1
+#define LEVEL_UP            6
 
 #define SEED 1
 

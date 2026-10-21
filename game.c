@@ -10,6 +10,8 @@ static Orientation currentOrientation;
 static uint8_t currentMinoX = MINO_SPAWN_POSITION_X;
 static uint8_t currentMinoY = MINO_SPAWN_POSITION_Y;
 
+static uint32_t lineCount = 0;
+
 // Stores the seven upcoming pieces
 static uint8_t bag[7];
 static uint8_t bagIndex = 7;
@@ -481,7 +483,9 @@ void clearRows(){
                 gameBoard[0][j] = 0;
             }
         }
+        lineCount += clearCount;
         reWriteScreen();
+        tickSpeed = (uint32_t)((lineCount / LEVEL_UP + 1) * MULTIPLIER_LEVEL);
     }
 }
 

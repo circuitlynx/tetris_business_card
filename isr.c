@@ -20,8 +20,9 @@ static volatile uint32_t upLockedMs;
 static volatile bool     downLocked;
 static volatile uint32_t downLockedMs;
 
-volatile uint32_t tickSpeed = 1; // Overall tick speedup
+volatile uint32_t lineCount = 0; // Lines cleared.
 volatile uint8_t  speedUp   = 1; // Used only for holding DOWN
+volatile uint32_t tickSpeed = 1;
 
 // Helper function for the timer. If a pin has been HIGH for longer than DEBOUNCE_MS it will arm itself.
 static bool rearmPin(uint32_t pin, volatile bool *locked, volatile uint32_t *lockMs);
