@@ -448,7 +448,8 @@ void rotateMino(void){
 
 void clearRows(){
     bool full = true;
-    bool anyCleared = false;
+    uint8_t clearCount = 0;
+    uint8_t toClear[4];
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < SCREEN_WIDTH; j++){
             if (gameBoard[i + currentMinoY][BORDER + j] == 0) {
@@ -457,18 +458,21 @@ void clearRows(){
             }
         }
         if (full == true){
-            anyCleared = true;
+            toClear[clearCount] = i + currentMinoY;
+            clearCount++;
             // TODO: If this is above the screen this will break. FIX!
             for (int j = 0; j < SCREEN_WIDTH; j++) {
                 writePixel(yScreenPos(i + currentMinoY), j, hex(white));
             }
-            
-            uint32_t start = msPassed;
-            while ((msPassed - start) < 150) {
-                __WFI();
-            }
-
-            for (int j = i + currentMinoY; j > 0; j--){
+        } else full = true;
+    }
+    if (clearCount) {
+        uint32_t start = msPassed;
+        while ((msPassed - start) < 150) {
+            __WFI();
+        }
+        for (int i = 0; i < clearCount; i++){
+            for (int j = toClear[i]; j > 0; j--){
                 for (int k = 0; k < BOARD_WIDTH; k++){
                     gameBoard[j][k] = gameBoard[j-1][k];
                 }
@@ -476,10 +480,9 @@ void clearRows(){
             for (int j = 0; j < BOARD_WIDTH; j++){
                 gameBoard[0][j] = 0;
             }
-            
-        } else full = true;
+        }
+        reWriteScreen();
     }
-    if (anyCleared) reWriteScreen();
 }
 
 void reWriteScreen(){
