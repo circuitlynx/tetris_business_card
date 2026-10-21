@@ -219,7 +219,7 @@ void gameTick(void){
     
     if (!lowerMino()) {
         setMino();
-        //clearRows();
+        clearRows();
         return;
     }
 }
@@ -426,4 +426,58 @@ void setMino(){
         }
     }
     currentMino = NONE;
+}
+
+void moveMino(int8_t direction){
+    if (canBePlaced(currentMinoY, currentMinoX + direction, minoType(), currentOrientation)) {
+        drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, true);
+        currentMinoX += direction;
+        drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, false);
+    }
+}
+
+void rotateMino(void){
+    if (canBePlaced(currentMinoY, currentMinoX, minoType(), currentOrientation + 1)){
+        drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, true);
+        currentOrientation = (currentOrientation + 1) % 4;
+        drawMino(yScreenPos(currentMinoY), xScreenPos(currentMinoX), minoType(), currentOrientation, false);
+    }
+}
+
+void clearRows(){
+    bool full = true;
+    bool anyCleared = false;
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < SCREEN_WIDTH; j++){
+            if (gameBoard[i + currentMinoY][BORDER + j] == 0) {
+                full = false;
+                break;
+            }
+        }
+        if (full == true){
+            anyCleared = true;
+            // TODO: If this is above the screen this will break. FIX!
+            for (int j = 0; j < SCREEN_WIDTH; j++) {
+                writePixel(yScreenPos(i + currentMinoY), j, hex(white));
+            }
+            for (int j = i + currentMinoY; j > 0; j--){
+                for (int k = 0; k < BOARD_WIDTH; k++){
+                    gameBoard[j][k] = gameBoard[j-1][k];
+                }
+            }
+            for (int j = 0; j < BOARD_WIDTH; j++){
+                gameBoard[0][j] = 0;
+            }
+            
+        } else full = true;
+    }
+    if (anyCleared) reWriteScreen();
+}
+
+void reWriteScreen(){
+    for (int i = 0 + BOARD_HEIGHT - BORDER - SCREEN_HEIGHT; i < BOARD_HEIGHT - BORDER; i++){
+        for (int j = 0 + BORDER; j < SCREEN_WIDTH + BORDER; j++){
+            writePixel(yScreenPos(i), xScreenPos(j), hex(gameBoard[i][j]));
+        }
+    }
 }

@@ -11,6 +11,9 @@
 #define MINO_SPAWN_POSITION_X 2 + BORDER
 #define MINO_SPAWN_POSITION_Y 0 + BOARD_HEIGHT - SCREEN_HEIGHT - BORDER
 
+#define LEFT -1
+#define RIGHT 1
+
 #define SEED 1
 
 typedef enum ActiveMino{
@@ -91,5 +94,13 @@ bool lowerMino(void);
 
 // Gets the current type of mino
 Mino minoType(void);
+
+// Moves the mino LEFT or RIGHT
+void moveMino(int8_t);
+
+// Rotates mino CLOCKWISE
+void rotateMino(void);
+
+void reWriteScreen(void);
 
 #endif
