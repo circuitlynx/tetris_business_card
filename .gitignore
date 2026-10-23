@@ -1,6 +1,7 @@
 Debug/
-Debug/*
-
-*.theia-workspace
-
+Release/
+.theia/
 .clangd
+.settings/
+*.theia-workspace
+*.bak
