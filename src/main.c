@@ -33,7 +33,6 @@
 #include "ti_msp_dl_config.h"
 #include "IS31FL3741.h"
 #include "game.h"
-#include "test.h"
 #include "isr.h"
 
 int main(void)
